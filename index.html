@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Dashboard</title>
+</head>
+<body>
+  <script src="appid.js"></script>
+  <script>
+    let url = `http://api.openweathermap.org/data/2.5/weather?q=Toronto,ca&units=metric&APPID=${APPID}`;
+    // fetch(url)
+    // .then(response => response.json())
+    // .then(data => console.log(`[weather]`, data));
+
+    // url = `http://api.openweathermap.org/data/2.5/forecast?q=Toronto,ca&units=metric&APPID=${APPID}`;
+    // fetch(url)
+    // .then(response => response.json())
+    // .then(data => console.log(`[forecast]`, data));
+
+    let lat = 43.7;
+    let lon = -79.42;
+    url = `http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&APPID=${APPID}`;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => console.log(`[uv]`, data));
+  </script>
+</body>
+</html>
