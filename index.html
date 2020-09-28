@@ -3,20 +3,100 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <title>Weather Dashboard</title>
 </head>
 <body>
-  <script src="appid.js"></script>
+  <header class='container-fluid bg-secondary text-white text-center py-2'>
+    <h1>Weather Dashboard</h1>
+  </header>
+  <div class="row">
+    <main class="col-auto">
+      <section class="border rounded pb-2 m-2 p-2">
+        <h2>
+          <span id="city">Atlanta</span> 
+          <span id="cur-date">(8/15/2019)</span> 
+          <span id="cur-w-icon">X</span>
+        </h2>
+        <p>Temperature: <span id="temp">90.9</span>&#8451;</p>
+        <p>Humidity: <span id="humidity">41</span>%</p>
+        <p>Wind Speed: <span id="wind">4.7</span>km/hr</p>
+        <p>UV Index: <span id="uv" class="badge">9.49</span></p>
+      </section>
+      <section class="m-2">
+        <h2>5-Day Forecast:</h2>
+        <div class="card-deck justify-content-between">
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h5 class="card-title">8/16/2019</h5>
+              <img src="#" alt="weather icon">
+              <p class="card-text">Temp: <span id="temp-day1">86.84</span>&#8451;</p>
+              <p class="card-text">Humidity: <span id="hum-day1">43</span>%</p>
+            </div>
+          </div>
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h5 class="card-title">8/16/2019</h5>
+              <img src="#" alt="weather icon">
+              <p class="card-text">Temp: <span id="temp-day1">86.84</span>&#8451;</p>
+              <p class="card-text">Humidity: <span id="hum-day1">43</span>%</p>
+            </div>
+          </div>
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h5 class="card-title">8/16/2019</h5>
+              <img src="#" alt="weather icon">
+              <p class="card-text">Temp: <span id="temp-day1">86.84</span>&#8451;</p>
+              <p class="card-text">Humidity: <span id="hum-day1">43</span>%</p>
+            </div>
+          </div>
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h5 class="card-title">8/16/2019</h5>
+              <img src="#" alt="weather icon">
+              <p class="card-text">Temp: <span id="temp-day1">86.84</span>&#8451;</p>
+              <p class="card-text">Humidity: <span id="hum-day1">43</span>%</p>
+            </div>
+          </div>
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h5 class="card-title">8/16/2019</h5>
+              <img src="#" alt="weather icon">
+              <p class="card-text">Temp: <span id="temp-day1">86.84</span>&#8451;</p>
+              <p class="card-text">Humidity: <span id="hum-day1">43</span>%</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <aside class="col-lg-3 mx-1 mr-lg-1 ml-lg-0 mt-2">
+      <h4>Search for a City:</h4>
+      <div class="input-group mb-2">
+        <input type="text" class="form-control" aria-label="Search for City" aria-describedby="search">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" id="search">Search</button>
+        </div>
+      </div>
+      <div class="list-group">
+        <button type="button" class="list-group-item list-group-item-action">Austin</button>
+        <button type="button" class="list-group-item list-group-item-action">Chicago</button>
+        <button type="button" class="list-group-item list-group-item-action">Toronto</button>
+        <button type="button" class="list-group-item list-group-item-action">San Francisco</button>
+        <button type="button" class="list-group-item list-group-item-action">Atlanta</button>
+      </div>
+    </aside>
+  </div>
+  <!-- <script src="appid.js"></script>
   <script>
     let url = `http://api.openweathermap.org/data/2.5/weather?q=Toronto,ca&units=metric&APPID=${APPID}`;
-    // fetch(url)
-    // .then(response => response.json())
-    // .then(data => console.log(`[weather]`, data));
+    fetch(url)
+      .then(response => response.json())
+      .then(data => console.log(`[weather]`, data));
 
-    // url = `http://api.openweathermap.org/data/2.5/forecast?q=Toronto,ca&units=metric&APPID=${APPID}`;
-    // fetch(url)
-    // .then(response => response.json())
-    // .then(data => console.log(`[forecast]`, data));
+    url = `http://api.openweathermap.org/data/2.5/forecast?q=Toronto,ca&units=metric&APPID=${APPID}`;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => console.log(`[forecast]`, data));
 
     let lat = 43.7;
     let lon = -79.42;
@@ -24,6 +104,6 @@
     fetch(url)
       .then(response => response.json())
       .then(data => console.log(`[uv]`, data));
-  </script>
+  </script> -->
 </body>
 </html>
