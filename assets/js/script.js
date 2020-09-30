@@ -7,17 +7,11 @@ let weatherReports; // array of weather reports;
 // Compute dates for 5 day forcast
 let now = Date.now();
 let oneDay = 24*60*60*1000; // milliseconds in one day
-let day0, day1, day2, day3, day4, day5, dateStr;
+let dateStr;
+let day = [];
 for (let cnt = 0; cnt <= 5; cnt++) {
   dateStr = new Date(now + (oneDay * cnt)).toLocaleDateString();
-  switch (cnt) {
-    case 0: day0 = dateStr;
-    case 1: day1 = dateStr;
-    case 2: day2 = dateStr;
-    case 3: day3 = dateStr;
-    case 4: day4 = dateStr;
-    case 5: day5 = dateStr;
-  }
+  day.push(dateStr);
 }
 
 // initialize list of search terms from localStorage
@@ -51,7 +45,30 @@ if (tmp == null) {
 }
 
 function displayCityWeather() {
+  for (let idx=0; idx <= 5; idx++) {
+    document.getElementById(`day${idx}`).innerHTML = day[idx];
+    document.getElementById(`temp-day${idx}`).innerHTML = weatherReports[lastSearchIdx].forecast[idx].temp;
+    document.getElementById(`hum-day${idx}`).innerHTML = weatherReports[lastSearchIdx].forecast[idx].humidity;
+    document.getElementById(`icon-day${idx}`)
+      .setAttribute('src', `assets/images/${weatherReports[lastSearchIdx].forecast[idx].icon}_2x.png`);
+  }
+  document.getElementById('wind').innerHTML = weatherReports[lastSearchIdx].wind;
+  document.getElementById('city').innerHTML = weatherReports[lastSearchIdx].displayName;
+  let uvBadge = document.getElementById('uv');
+  let uvVal = Number(weatherReports[lastSearchIdx].uv);
+  uvBadge.innerHTML = uvVal;
 
+  if (uvVal <= 2) {
+    uvBadge.classList.add('uv-low');
+  } else if (uvVal <= 5) {
+    uvBadge.classList.add('uv-moderate');
+  } else if (uvVal <= 7) {
+    uvBadge.classList.add('uv-high');
+  } else if (uvVal <= 10) {
+    uvBadge.classList.add('uv-very-high');
+  } else {
+    uvBadge.classList.add('uv-extreme');
+  }
 }
 
 function fetchCityWeather(searchTerm, sidx) {
@@ -82,7 +99,7 @@ function fetchCityWeather(searchTerm, sidx) {
   tempHumIcon.temp = weather.main.temp;
   tempHumIcon.humidity = weather.main.humidity;
   tempHumIcon.icon = weather.weather[0].icon;
-  newReport[forecast].push(tempHumIcon);
+  newReport.forecast.push(tempHumIcon);
 
   // Get the 5 day forcast
   let forecast = JSON.parse(localStorage.getItem('forecast'));
@@ -99,7 +116,7 @@ function fetchCityWeather(searchTerm, sidx) {
     tempHumIcon.temp = forecast.list[jdx].main.temp;
     tempHumIcon.humidity = forecast.list[jdx].main.humidity;
     tempHumIcon.icon = forecast.list[jdx].weather[0].icon;
-    newReport[forecast].push(tempHumIcon);
+    newReport.forecast.push(tempHumIcon);
   }
 
   // get uv
@@ -111,13 +128,13 @@ function fetchCityWeather(searchTerm, sidx) {
   } else {
     weatherReports.push(newReport);
     searchTerms.push(searchTerm);
-    lastSearchIdx = searchTerms.lenght - 1;
+    lastSearchIdx = searchTerms.length - 1;
     // Update items in local storage
     localStorage.setItem('wAppSearchTerms', JSON.stringify(searchTerms));
     localStorage.setItem('wAppLastSearchIdx', `${lastSearchIdx}`);
     localStorage.setItem('wAppWeatherReports', JSON.stringify(weatherReports));
   }
-  console.log(`[fetchCityWeather] Fetch data from API for ${searchTerms[lastSearchIdx]}.`);
+  console.log(`[fetchCityWeather] Fetch data from API for ${searchTerms[lastSearchIdx]}.`, weatherReports);
 
   displayCityWeather();
 }
