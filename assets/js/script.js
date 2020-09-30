@@ -50,12 +50,90 @@ if (tmp == null) {
   weatherReports = JSON.parse(tmp);
 }
 
-function fetchCityWeather(searchTerm, idx) {
+function displayCityWeather() {
+
+}
+
+function fetchCityWeather(searchTerm, sidx) {
   // Do API call for fresh data
+  // For now, pull data from local storage for debugging
+
+  /* Save subset of info in new report object literal with the following format:
+      forecast: [ {temp: xx, humidity: xx, icon: xx}, ... ]
+      wind: xx,
+      uv: xx,
+      time: xx,
+      searchTerm: xx,
+      displayName: xx
+  */
+  let lat, lon; 
+  let newReport = { forecast: [] };
+  let tempHumIcon = { };
+  newReport.searchTerm = searchTerm;
+
+  let weather = JSON.parse(localStorage.getItem('weather'));
+  // newReport.displayName = weather.name;
+  newReport.displayName = searchTerm;
+  newReport.wind = weather.wind.speed;
+  newReport.time = Date.now();
+  lat = weather.coord.lat;
+  lon = weather.coord.lon;
+
+  tempHumIcon.temp = weather.main.temp;
+  tempHumIcon.humidity = weather.main.humidity;
+  tempHumIcon.icon = weather.weather[0].icon;
+  newReport[forecast].push(tempHumIcon);
+
+  // Get the 5 day forcast
+  let forecast = JSON.parse(localStorage.getItem('forecast'));
+  // Search for first mid-day temperature
+  let idx, jdx;
+  for (idx=0; idx < forecast.list.length; idx++) {
+    if ((forecast.list[idx].dt_txt).indexOf("12:00:00") > 0) {
+      break;
+    }
+  }
+  // forecast are every 3hrs, so mid-day entries are 8 indicies apart
+  for (jdx=idx; jdx < 40; jdx+=8) {
+    tempHumIcon = {};
+    tempHumIcon.temp = forecast.list[jdx].main.temp;
+    tempHumIcon.humidity = forecast.list[jdx].main.humidity;
+    tempHumIcon.icon = forecast.list[jdx].weather[0].icon;
+    newReport[forecast].push(tempHumIcon);
+  }
+
+  // get uv
+  let uv = JSON.parse(localStorage.getItem('uv'));
+  newReport.uv = uv.value;
+
+  if (sidx >= 0) {
+    weatherReports[lastSearchIdx] = newReport;
+  } else {
+    weatherReports.push(newReport);
+    searchTerms.push(searchTerm);
+    lastSearchIdx = searchTerms.lenght - 1;
+    // Update items in local storage
+    localStorage.setItem('wAppSearchTerms', JSON.stringify(searchTerms));
+    localStorage.setItem('wAppLastSearchIdx', `${lastSearchIdx}`);
+    localStorage.setItem('wAppWeatherReports', JSON.stringify(weatherReports));
+  }
+  console.log(`[fetchCityWeather] Fetch data from API for ${searchTerms[lastSearchIdx]}.`);
+
+  displayCityWeather();
 }
 
 function retrieveCityWeather() {
-  // check if 10min has passed since data saved
+  // Check if 10min has passed since data saved
+  let now = Date.now();
+  let then = weatherReports[lastSearchIdx].time;
+  // Find diff btw 'now' and 'then' in minutes
+  if (Math.floor((now-then)/(60*1000)) > 10) {
+    console.log(`[retrieveCityWeather] Stored data is old. Get fresh data for ${searchTerms[lastSearchIdx]}.`);
+    fetchCityWeather(searchTerms[lastSearchIdx], lastSearchIdx);
+  } else {
+    console.log(`[retrieveCityWeather] Retrieve data from storage for ${searchTerms[lastSearchIdx]}.`);
+  }
+  displayCityWeather();
 }
 
 function findCityWeather() {
