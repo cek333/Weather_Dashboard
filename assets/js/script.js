@@ -95,7 +95,7 @@ async function fetchCityWeather(searchTerm, sidx) {
   let newReport = { forecast: [] };
   let tempHumIcon = { };
   
-  let url = `http://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&units=metric&APPID=${APPID}`;
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&units=metric&APPID=${APPID}`;
   let response = await fetch(url);
   if (!response.ok) {
     document.getElementById('warning').innerHTML = `An error occured: ${response.status}`;
@@ -118,7 +118,7 @@ async function fetchCityWeather(searchTerm, sidx) {
   newReport.forecast.push(tempHumIcon);
 
   // Get the 5 day forcast
-  url = `http://api.openweathermap.org/data/2.5/forecast?q=${searchTerm}&units=metric&APPID=${APPID}`;
+  url = `https://api.openweathermap.org/data/2.5/forecast?q=${searchTerm}&units=metric&APPID=${APPID}`;
   response = await fetch(url);
   if (!response.ok) {
     document.getElementById('warning').innerHTML += `An error occured: ${response.status}`;
@@ -144,7 +144,7 @@ async function fetchCityWeather(searchTerm, sidx) {
   }
 
   // get uv
-  url = `http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&APPID=${APPID}`
+  url = `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&APPID=${APPID}`
   response = await fetch(url);
   if (!response.ok) {
     document.getElementById('warning').innerHTML += `An error occured: ${response.status}`;
