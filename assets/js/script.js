@@ -142,13 +142,15 @@ function fetchCityWeather(searchTerm, sidx) {
     weatherReports.push(newReport);
     searchTerms.push(searchTerm);
     lastSearchIdx = searchTerms.length - 1;
-    // Update items in local storage
-    localStorage.setItem('wAppSearchTerms', JSON.stringify(searchTerms));
-    localStorage.setItem('wAppLastSearchIdx', `${lastSearchIdx}`);
-    localStorage.setItem('wAppWeatherReports', JSON.stringify(weatherReports));
+
     // Add searchTerm to search list
     addItemToSearchList( searchTerm );
+    // Update search list in local storage
+    localStorage.setItem('wAppSearchTerms', JSON.stringify(searchTerms));
   }
+  // Update items in local storage
+  localStorage.setItem('wAppLastSearchIdx', `${lastSearchIdx}`);
+  localStorage.setItem('wAppWeatherReports', JSON.stringify(weatherReports));
   console.log(`[fetchCityWeather] Fetch data from API for ${searchTerms[lastSearchIdx]}.`);
 
   displayCityWeather();
@@ -158,6 +160,7 @@ function retrieveCityWeather() {
   // Check if 10min has passed since data saved
   let now = Date.now();
   let then = weatherReports[lastSearchIdx].time;
+  // console.log(`[retrieveCityWeather] now:${now}, then:${then}, diff(min):${Math.floor((now-then)/(60*1000))}`);
   // Find diff btw 'now' and 'then' in minutes
   if (Math.floor((now-then)/(60*1000)) > 10) {
     console.log(`[retrieveCityWeather] Stored data is old. Get fresh data for ${searchTerms[lastSearchIdx]}.`);
@@ -169,6 +172,7 @@ function retrieveCityWeather() {
 }
 
 function findCityWeather() {
+  console.log('[findCityWeather] event triggerred')
   let newSearchTerm = document.getElementById('search-term').value;
   // check if user has repeated a previous search
   let idx = searchTerms.indexOf(newSearchTerm);
@@ -182,5 +186,13 @@ function findCityWeather() {
   }
 }
 
+function repeatCitySearch( event ) {
+  console.log('[repeatCitySearch] event triggerred')
+  let oldSearchTerm = event.target.innerHTML;
+  lastSearchIdx = searchTerms.indexOf(oldSearchTerm);
+  retrieveCityWeather();
+}
+
 // add event listeners
 document.getElementById('search').addEventListener('click', findCityWeather);
+document.querySelector('.list-group').addEventListener('click', repeatCitySearch)
