@@ -79,7 +79,7 @@ function displayCityWeather() {
   }
 }
 
-function fetchCityWeather(searchTerm, sidx) {
+async function fetchCityWeather(searchTerm, sidx) {
   // Do API call for fresh data
   // For now, pull data from local storage for debugging
 
@@ -94,11 +94,19 @@ function fetchCityWeather(searchTerm, sidx) {
   let lat, lon; 
   let newReport = { forecast: [] };
   let tempHumIcon = { };
+  
+  let url = `http://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&units=metric&APPID=${APPID}`;
+  let response = await fetch(url);
+  if (!response.ok) {
+    document.getElementById('warning').innerHTML = `An error occured: ${response.status}`;
+    return;
+  }
+  let weather = await response.json();
+  // console.log(`[fetchCityWeather] weather:`, weather);
+  // dbg: let weather = JSON.parse(localStorage.getItem('weather'));
+  // dbg: newReport.displayName = searchTerm;
   newReport.searchTerm = searchTerm;
-
-  let weather = JSON.parse(localStorage.getItem('weather'));
-  // newReport.displayName = weather.name;
-  newReport.displayName = searchTerm;
+  newReport.displayName = weather.name;
   newReport.wind = weather.wind.speed;
   newReport.time = Date.now();
   lat = weather.coord.lat;
@@ -110,7 +118,15 @@ function fetchCityWeather(searchTerm, sidx) {
   newReport.forecast.push(tempHumIcon);
 
   // Get the 5 day forcast
-  let forecast = JSON.parse(localStorage.getItem('forecast'));
+  url = `http://api.openweathermap.org/data/2.5/forecast?q=${searchTerm}&units=metric&APPID=${APPID}`;
+  response = await fetch(url);
+  if (!response.ok) {
+    document.getElementById('warning').innerHTML += `An error occured: ${response.status}`;
+    return;
+  }
+  let forecast = await response.json();
+  // console.log(`[fetchCityWeather] forecast:`, forecast);  
+  // dbg: let forecast = JSON.parse(localStorage.getItem('forecast'));
   // Search for first mid-day temperature
   let idx, jdx;
   for (idx=0; idx < forecast.list.length; idx++) {
@@ -128,7 +144,15 @@ function fetchCityWeather(searchTerm, sidx) {
   }
 
   // get uv
-  let uv = JSON.parse(localStorage.getItem('uv'));
+  url = `http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&APPID=${APPID}`
+  response = await fetch(url);
+  if (!response.ok) {
+    document.getElementById('warning').innerHTML += `An error occured: ${response.status}`;
+    return;
+  }
+  let uv = await response.json();
+  // console.log(`[fetchCityWeather] uv:`, uv);  
+  // dbg: let uv = JSON.parse(localStorage.getItem('uv'));
   newReport.uv = uv.value;
 
   if (sidx >= 0) {
@@ -167,12 +191,15 @@ function retrieveCityWeather() {
     fetchCityWeather(searchTerms[lastSearchIdx], lastSearchIdx);
   } else {
     console.log(`[retrieveCityWeather] Retrieve data from storage for ${searchTerms[lastSearchIdx]}.`);
+    // Update last search index in storage
+    localStorage.setItem('wAppLastSearchIdx', `${lastSearchIdx}`);
     displayCityWeather();
   }
 }
 
 function findCityWeather() {
-  console.log('[findCityWeather] event triggerred')
+  // clear any previous warning messages
+  document.getElementById('warning').innerHTML = "";
   let newSearchTerm = document.getElementById('search-term').value;
   // check if user has repeated a previous search
   let idx = searchTerms.indexOf(newSearchTerm);
@@ -187,7 +214,8 @@ function findCityWeather() {
 }
 
 function repeatCitySearch( event ) {
-  console.log('[repeatCitySearch] event triggerred')
+  // clear any previous warning messages
+  document.getElementById('warning').innerHTML = "";
   let oldSearchTerm = event.target.innerHTML;
   lastSearchIdx = searchTerms.indexOf(oldSearchTerm);
   retrieveCityWeather();
