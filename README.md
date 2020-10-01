@@ -17,9 +17,11 @@ If you navigate away from the app, when you next return, the app will be pre-loa
 
 ## How It Works
 When you search for a city, three API calls are made to OpenWeather API to fetch: 
+
 a. the current weather, 
 b. the 5-day forecast, and 
 c. the UV information. 
+
 Using javascript, the app extracts portions of the JSON data returned by these API calls and constructs a new 'weather report' object literal which is then stored in localStorage. A list of all searches as well as the last city search is also saved to localStorage. 
 
 In accordance with the OpenWeather API guidelines, if you search for a city a second time (either by using the search box or tapping on the list of previous searches), the weather report will be retrieved from localStorage if less than 10 minutes have passed. If more than 10 minutes have passed, the OpenWeather API will be used to fetch the data again. To make this behaviour possible, the weather reports written to localStorage include a timestamp. So when a weather report is retrieved from localStorage, the app first calculates whether 10 min has elapsed; if no, the weather report is used as is, if yes, new data is fetched to replace the old report.
