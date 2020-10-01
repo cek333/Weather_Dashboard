@@ -18,9 +18,9 @@ If you navigate away from the app, when you next return, the app will be pre-loa
 ## How It Works
 When you search for a city, three API calls are made to OpenWeather API to fetch: 
 
-a. the current weather, 
-b. the 5-day forecast, and 
-c. the UV information. 
+1. the current weather, 
+2. the 5-day forecast, and 
+3. the UV information. 
 
 Using javascript, the app extracts portions of the JSON data returned by these API calls and constructs a new 'weather report' object literal which is then stored in localStorage. A list of all searches as well as the last city search is also saved to localStorage. 
 
