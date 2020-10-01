@@ -1,0 +1,16 @@
+.card { min-width: 145px; max-width: 145px; }
+.uv-low {
+  background: #36db3a;
+}
+.uv-moderate {
+  background: #ffcc0c;
+}
+.uv-high {
+  background: #f57c11;
+}
+.uv-very-high {
+  background: #f6562a;
+}
+.uv-extreme {
+  background: #c664f3;
+}
