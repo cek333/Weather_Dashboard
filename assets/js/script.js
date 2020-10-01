@@ -130,7 +130,7 @@ async function fetchCityWeather(searchTerm, sidx) {
   // Search for first mid-day temperature
   let idx, jdx;
   for (idx=0; idx < forecast.list.length; idx++) {
-    if ((forecast.list[idx].dt_txt).indexOf("12:00:00") > 0) {
+    if ((forecast.list[idx].dt_txt).indexOf("15:00:00") > 0) {
       break;
     }
   }
