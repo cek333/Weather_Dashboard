@@ -6,9 +6,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <script src="https://kit.fontawesome.com/fab15f6c83.js" crossorigin="anonymous"></script>
   <title>Weather Dashboard</title>
-  <style>
-    .card { min-width: 145px; max-width: 145px; }
-  </style>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
   <header class='container-fluid bg-secondary text-white text-center py-2'>
@@ -73,7 +71,7 @@
         </div>
       </section>
     </main>
-    <aside class="col-lg-3 mx-1 mr-lg-1 ml-lg-0 mt-2">
+    <aside class="col-lg-3 mx-1 mt-2">
       <h4>Search for a City:</h4>
       <div class="input-group mb-2">
         <input type="text" id="search-term" class="form-control" aria-label="Search for City" aria-describedby="search">
@@ -81,37 +79,13 @@
           <button class="btn btn-primary" type="button" id="search"><i class="fas fa-search"></i></button>
         </div>
       </div>
+      <p id="warning" class="text-danger"></p>
       <div class="list-group">
-        <button type="button" class="list-group-item list-group-item-action">Austin</button>
-        <button type="button" class="list-group-item list-group-item-action">Chicago</button>
-        <button type="button" class="list-group-item list-group-item-action">Toronto</button>
-        <button type="button" class="list-group-item list-group-item-action">San Francisco</button>
-        <button type="button" class="list-group-item list-group-item-action">Atlanta</button>
+        <!-- <button type="button" class="list-group-item list-group-item-action">Austin</button> -->
       </div>
     </aside>
   </div>
   <script src="assets/js/weather_data.js"></script>
   <script src="assets/js/script.js"></script>
-  <!-- <script>
-    let url = `http://api.openweathermap.org/data/2.5/weather?q=Toronto,ca&units=metric&APPID=${APPID}`;
-    fetch(url)
-      .then(response => response.json())
-      .then(data => localStorage.setItem('weather', JSON.stringify(data)));
-      //.then(data => console.log(`[weather]`, data));
-
-    url = `http://api.openweathermap.org/data/2.5/forecast?q=Toronto,ca&units=metric&APPID=${APPID}`;
-    fetch(url)
-      .then(response => response.json())
-      .then(data => localStorage.setItem('forecast', JSON.stringify(data)));
-      //.then(data => console.log(`[forecast]`, data));
-
-    let lat = 43.7;
-    let lon = -79.42;
-    url = `http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&APPID=${APPID}`;
-    fetch(url)
-      .then(response => response.json())
-      .then(data => localStorage.setItem('uv', JSON.stringify(data)));
-      //.then(data => console.log(`[uv]`, data));
-  </script> -->
 </body>
 </html>
