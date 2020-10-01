@@ -22,19 +22,8 @@ if (tmp == null) {
   searchTerms = JSON.parse(tmp);
   // populate search list
   for (let idx=0; idx < searchTerms.length; idx++) {
-    let btn = document.createElement('button');
-    btn.setAttribute('type', 'button');
-    btn.classList.add('list-group-item', 'list-group-item-action');
-    btn.innerHTML = searchTerms[idx];
-    document.querySelector('.list-group').appendChild(btn);
+    addItemToSearchList( searchTerms[idx] );
   }
-}
-
-tmp = localStorage.getItem('wAppLastSearchIdx');
-if (tmp == null) {
-  lastSearchIdx = -1;
-} else {
-  lastSearchIdx = Number(tmp);
 }
 
 tmp = localStorage.getItem('wAppWeatherReports');
@@ -42,6 +31,25 @@ if (tmp == null) {
   weatherReports = [];
 } else {
   weatherReports = JSON.parse(tmp);
+}
+
+tmp = localStorage.getItem('wAppLastSearchIdx');
+if (tmp == null) {
+  lastSearchIdx = -1;
+  // No previous searches; hide display
+  document.querySelector('main').style.display = "none";
+} else {
+  lastSearchIdx = Number(tmp);
+  // Initialize display with last searched city
+  retrieveCityWeather();
+}
+
+function addItemToSearchList( searchTerm ) {
+  let btn = document.createElement('button');
+  btn.setAttribute('type', 'button');
+  btn.classList.add('list-group-item', 'list-group-item-action');
+  btn.innerHTML = searchTerm;
+  document.querySelector('.list-group').appendChild(btn);
 }
 
 function displayCityWeather() {
@@ -126,6 +134,11 @@ function fetchCityWeather(searchTerm, sidx) {
   if (sidx >= 0) {
     weatherReports[lastSearchIdx] = newReport;
   } else {
+    // If this is the very first search (lastSearchIdx=-1), then enable the display
+    if (lastSearchIdx==-1) {
+      document.querySelector('main').style.display = "block";
+    }
+
     weatherReports.push(newReport);
     searchTerms.push(searchTerm);
     lastSearchIdx = searchTerms.length - 1;
@@ -133,8 +146,10 @@ function fetchCityWeather(searchTerm, sidx) {
     localStorage.setItem('wAppSearchTerms', JSON.stringify(searchTerms));
     localStorage.setItem('wAppLastSearchIdx', `${lastSearchIdx}`);
     localStorage.setItem('wAppWeatherReports', JSON.stringify(weatherReports));
+    // Add searchTerm to search list
+    addItemToSearchList( searchTerm );
   }
-  console.log(`[fetchCityWeather] Fetch data from API for ${searchTerms[lastSearchIdx]}.`, weatherReports);
+  console.log(`[fetchCityWeather] Fetch data from API for ${searchTerms[lastSearchIdx]}.`);
 
   displayCityWeather();
 }
@@ -149,8 +164,8 @@ function retrieveCityWeather() {
     fetchCityWeather(searchTerms[lastSearchIdx], lastSearchIdx);
   } else {
     console.log(`[retrieveCityWeather] Retrieve data from storage for ${searchTerms[lastSearchIdx]}.`);
+    displayCityWeather();
   }
-  displayCityWeather();
 }
 
 function findCityWeather() {
