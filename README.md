@@ -1,7 +1,7 @@
 # Weather_Dashboard
 This app allows you to query the weather information of various cities. For each city you're interested in, you'll be able to view the current weather conditions as well as conditions for the next 5 days. Weather information is provided courtesy the [OpenWeather API](https://openweathermap.org/api).
 
-The app was made using HTML, CSS, Javascript and Bootstrap, and the layout is responsive to various screen sizes as shown in the screenshots below.
+The app was made using HTML, CSS, Javascript, Bootstrap, and localStorage. The layout is responsive to various screen sizes as shown in the screenshots below.
 
 ![Screenshot of the Weather Dashboard on a small screen](assets/readme/wapp_small.png)
 ![Screenshot of the Weather Dashboard on a large screen](assets/readme/wapp_large.png)
